@@ -48,6 +48,12 @@ file(GLOB SOURCE_FILES "src/*.cc" "src/*.h")
 
 set(SOURCE ${SOURCE_FILES})
 
+set(FAISS_OPT_LEVEL avx2)
+set(BLA_VENDOR Intel10_64lp_dyn)
+set(MKL_PATH /mnt/home0/jasper/rag/conda_python_space/lib)
+set(MKL_LIBRARIES -Wl,--start-group;${MKL_PATH}/libmkl_intel_lp64.so;${MKL_PATH}/libmkl_gnu_thread.so;${MKL_PATH}/libmkl_core.so;-Wl,--end-group)
+message("ZJJDBG->MKL_LIBRARIES:" ${MKL_LIBRARIES})
+
 add_subdirectory("deps/faiss")
 set_target_properties(faiss PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -86,13 +92,14 @@ endif()
 # https://gitlab.kitware.com/cmake/community/-/wikis/doc/tutorials/How-To-Write-Platform-Checks#cmake-system
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     # Copy libmkl_intel_lp64.so, libmkl_sequential.so, libmkl_core.so
-    if(DEFINED ENV{MKLROOT})
+    if(DEFINED MKL_PATH)  #ENV{MKLROOT}
+        message("ZJJDBG->MKL_PATH:" ${MKL_PATH})
         set(DEPENDANCES_MKL
             libmkl_intel_lp64.so
             libmkl_sequential.so
             libmkl_core.so)
         foreach(dep ${DEPENDANCES_MKL})
-            file(TO_CMAKE_PATH "$ENV{MKLROOT}/lib/intel64/${dep}" MKL_dep)
+            file(TO_CMAKE_PATH "${MKL_PATH}/${dep}" MKL_dep)
             message("Copy DEPENDANCES_MKL: " ${MKL_dep})
             add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_if_different

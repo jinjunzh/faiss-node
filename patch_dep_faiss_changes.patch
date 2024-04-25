@@ -1,0 +1,28 @@
+diff --git a/cmake/FindMKL.cmake b/cmake/FindMKL.cmake
+index 460b86ad..c3a7e6c4 100644
+--- a/cmake/FindMKL.cmake
++++ b/cmake/FindMKL.cmake
+@@ -66,7 +66,7 @@ variable for your platform (``LIB``, ``DYLD_LIBRARY_PATH`` or
+ ``LD_LIBRARY_PATH``).
+ 
+ #]=======================================================================]
+-
++message("ZJJDBG->FindMKL.cmake S:" ${MKL_LIBRARIES})
+ include(CheckFunctionExists)
+ include(CMakePushCheckState)
+ include(FindPackageHandleStandardArgs)
+@@ -164,7 +164,7 @@ macro(CHECK_BLAS_LIBRARIES LIBRARIES _prefix _name _flags _list _threadlibs _add
+   #message("DEBUG: ${LIBRARIES} = ${${LIBRARIES}}")
+ endmacro()
+ 
+-set(MKL_LIBRARIES)
++#set(MKL_LIBRARIES)
+ if(NOT $ENV{BLA_VENDOR} STREQUAL "")
+   set(BLA_VENDOR $ENV{BLA_VENDOR})
+ else()
+@@ -361,3 +361,4 @@ find_package_handle_standard_args(MKL REQUIRED_VARS MKL_LIBRARIES)
+ 
+ cmake_pop_check_state()
+ set(CMAKE_FIND_LIBRARY_SUFFIXES ${_blas_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES})
++message("ZJJDBG->FindMKL.cmake E:" ${MKL_LIBRARIES})
+\ No newline at end of file
