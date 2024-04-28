@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 cmake_policy(SET CMP0091 NEW)
 cmake_policy(SET CMP0042 NEW)
 
-project(faiss-node LANGUAGES CXX)
+project(xfaiss-node LANGUAGES CXX)
 
 if (APPLE)
     find_package(OpenMP)
@@ -55,7 +55,7 @@ set(MKL_LIBRARIES -Wl,--start-group;${MKL_PATH}/libmkl_intel_lp64.so;${MKL_PATH}
 message("ZJJDBG->MKL_LIBRARIES:" ${MKL_LIBRARIES})
 
 add_subdirectory("deps/faiss")
-set_target_properties(faiss PROPERTIES
+set_target_properties(xfaiss PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
     LIBRARY_OUTPUT_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
     RUNTIME_OUTPUT_DIRECTORY $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -69,8 +69,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
             BUILD_WITH_INSTALL_RPATH FALSE
             LINK_FLAGS "-Wl,-rpath,$ORIGIN/")
 endif()
-target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/node_modules/node-addon-api")
-target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB} faiss)
+target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_SOURCE_DIR}/node_modules/node-addon-api" "${CMAKE_SOURCE_DIR}/deps/faiss")
+target_link_libraries(${PROJECT_NAME} ${CMAKE_JS_LIB} xfaiss)
 
 if(MSVC AND CMAKE_JS_NODELIB_DEF AND CMAKE_JS_NODELIB_TARGET)
   # Generate node.lib

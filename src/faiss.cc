@@ -31,7 +31,7 @@ public:
   static Napi::Value read(const Napi::CallbackInfo &info)
   {
     Napi::Env env = info.Env();
-
+    printf("[ZJJDBG3]xfaiss-node -> read:%d\n",info.Length());
     if (info.Length() != 1)
     {
       Napi::Error::New(env, "Expected 1 argument, but got " + std::to_string(info.Length()) + ".")
@@ -255,7 +255,8 @@ public:
       Napi::TypeError::New(env, "Invalid the second argument type, must be a Number.").ThrowAsJavaScriptException();
       return env.Undefined();
     }
-
+    printf("[ZJJDBG3]xfaiss-node -> search len:%d, k: %d\n",info.Length(),info[1].As<Napi::Number>().Uint32Value());
+  
     const uint32_t k = info[1].As<Napi::Number>().Uint32Value();
     if (k > index_->ntotal)
     {
