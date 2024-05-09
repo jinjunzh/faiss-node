@@ -1,3 +1,4 @@
 [submodule "deps/faiss"]
 	path = deps/faiss
-	url = https://github.com/intel-innersource/libraries.databases.thirdparty.faiss.git
+	url = https://github.com/jinjunzh/libraries.databases.thirdparty.faiss.git
+	branch = xfaiss-node-dev
